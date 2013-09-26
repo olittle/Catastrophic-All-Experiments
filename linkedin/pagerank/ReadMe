@@ -1,0 +1,2 @@
+1. Learn the pagerank score from the network constructed from training data 
+2. then learn \beta that fits the training data best 
