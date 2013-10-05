@@ -6,7 +6,7 @@
 #
 # Creation Date : 28-06-2013
 #
-# Last Modified : Sun 22 Sep 2013 12:23:13 PM CDT
+# Last Modified : Fri 27 Sep 2013 09:56:54 AM CDT
 #
 # Created By : Huan Gui (hgui@linkedin.com) 
 #
@@ -99,7 +99,11 @@ def Test(Cost_array, Benefit_array, Member_array, K, dataset, tType , f, TestDat
     lnr = 0 
 
    # Study the orginal score and plot
-
+     
+    N_F1 = 0 
+    O_F1 = 0 
+    TP = 0 
+    
     for i in range(tRrd):
         cTotal += 1
         if Score[i][1] < class_threshold:
@@ -122,21 +126,27 @@ def Test(Cost_array, Benefit_array, Member_array, K, dataset, tType , f, TestDat
         AUC_score += 0.5 * (lp + Pre) * (Rcl - lr)
         lp = Pre
         lr = Rcl
+        
+        old_f1 = 2 * lp * lr / ( lp + lr) 
+        if old_f1 > O_F1:
+            O_F1 = old_f1 
 
         newAUC_score += 0.5 * (lnp + new_Pre) * (new_Rcl - lnr)
         lnp = new_Pre
         lnr = new_Rcl
+        
+        new_f1 = (2 * new_Pre * new_Rcl) / (new_Pre + new_Rcl)
+        if new_f1 > N_F1:
+            N_F1 = new_f1
     
-    print "Original Similarity, AUC = ", AUC_score
-    print "new AUC score, AUC = ", newAUC_score
+    print "Original Similarity, AUC = ", AUC_score, O_F1
+    print "new AUC score, AUC = ", newAUC_score, N_F1
     
     testfile = open(str(f) + "/test." + dataset + "." + str(f), "a") 
-    testfile.write(str(AUC_score) + "\t" + str(newAUC_score) + "\n")
+    testfile.write(str(AUC_score) + "\t" + str(newAUC_score) + "\t" + str(O_F1) + "\t" + str(N_F1) + "\n")
     testfile.close() 
     
     return newAUC_score
-#    plt.plot(AUC_x, AUC_y, label = "origial similarity score, AUC = " + str(AUC_score))
-#    plt.plot(newAUC_x, newAUC_y, label = "new score, AUC = " + str(newAUC_score))
-#    plt.legend()
-#    #plt.show()
-#    plt.savefig("result.png")
+
+
+

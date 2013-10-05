@@ -6,7 +6,7 @@
 #
 # Creation Date : 28-06-2013
 #
-# Last Modified : Sun 22 Sep 2013 12:23:50 PM CDT
+# Last Modified : Mon 30 Sep 2013 03:20:50 PM CDT
 #
 # Created By : Huan Gui (hgui@linkedin.com) 
 #
@@ -15,11 +15,11 @@
 import os 
 def Store(Cost_array, Benefit_array, Member_array, k, dataset, f):
     
-    cost_fout = open(str(f) + "/Member.Cost" , "w") 
+    cost_fout = open(dataset + "/Member.Cost.txt" , "w") 
     for memId in range(len(Cost_array)):
         cost_fout.write(str(memId) + "\t" + str(Cost_array[memId]) + "\n")
     
-    bene_fout = open(str(f) + "/Job.Benefit.Matrix" , "w") 
+    bene_fout = open(dataset + "/Job.Benefit.Matrix.txt" , "w") 
     for jobId in range(len(Benefit_array)):
         bene_fout.write(str(jobId) + "\t")
         for j in range(f):
@@ -28,7 +28,7 @@ def Store(Cost_array, Benefit_array, Member_array, k, dataset, f):
     
     cost_fout.close()
     
-    bene_fout = open(str(f) + "/Member.Benefit.Matrix", "w") 
+    bene_fout = open(dataset + "/Member.Benefit.Matrix.txt", "w") 
     for memId in range(len(Member_array)):
         bene_fout.write(str(memId) + "\t")
         for j in range(f):

@@ -6,7 +6,7 @@
 #
 # Creation Date : 27-06-2013
 #
-# Last Modified : Sun 22 Sep 2013 03:45:34 PM CDT
+# Last Modified : Tue 01 Oct 2013 09:59:37 PM CDT
 #
 # Created By : Huan Gui (hgui@linkedin.com) 
 #
@@ -17,8 +17,9 @@ import math
 
 import numpy as np 
 
-def LoadData(dataset, f):
+def LoadData(dataset):
 
+    f = 1 
     # Load Different Relationship Data
 
     Member_Job_List = {} 
@@ -34,8 +35,8 @@ def LoadData(dataset, f):
 
 # --------------------------------------------------------------
 # May Change To different file formats
+    data = open("../../" + dataset + "/data/input.txt") 
     
-    data = open("input.txt")
     cnt = 0 
     for line in data:
         if line[0] != "t":
@@ -68,29 +69,29 @@ def LoadData(dataset, f):
         Cost[memId] = 0
         Cost_Prior[memId] = 0 
 
-    initMap = {}
-    for i in range(12):
-        initMap[i] = 1.0 / (1.0 + math.exp(0.5 * (1 - i))) - 0.5 
-
-# Prior map between senior score and prior score 
-# -------------------------------------------------------------
-# Give prior and inital value for some members 
-    
-    data = open("input.txt")
-    for line in data:
-        if line[0] != "s":
-            continue 
-
-        value = line.split("\n")[0].split("\t")
-        try:
-            memId = int(value[1])
-            if not memId in Cost:
-                continue 
-            score = int(value[2])
-            Cost[memId] = initMap[score]
-            Cost_Prior[memId] = initMap[score] 
-        except:
-            print line 
+#    initMap = {}
+#    for i in range(12):
+#        initMap[i] = 0 #1.0 / (1.0 + math.exp(0.5 * (1 - i))) - 0.5 
+#
+## Prior map between senior score and prior score 
+## -------------------------------------------------------------
+## Give prior and inital value for some members 
+#    
+#    data = open("../data/input.txt")
+#    for line in data:
+#        if line[0] != "s":
+#            continue 
+#
+#        value = line.split("\n")[0].split("\t")
+#        try:
+#            memId = int(value[1])
+#            if not memId in Cost:
+#                continue 
+#            score = int(value[2])
+#            Cost[memId] = initMap[score]
+#            Cost_Prior[memId] = initMap[score] 
+#        except:
+#            print line 
 
     for jobId in jobList:
         Benefit[jobId] = np.random.random(f) 
@@ -198,7 +199,7 @@ def LoadData(dataset, f):
     Cost_array = np.random.randn(len(Cost))
     Cost_Prior_array = np.zeros(len(Cost)) 
     Benefit_array = np.random.randn(len(Benefit), f)
-    Member_array = np.random.randn(len(Cost), f) 
+    Member_array = np.ones((len(Cost), f))
 
     job_index = {}
     index_job = {}
@@ -210,7 +211,7 @@ def LoadData(dataset, f):
     for mem in Cost:
         mem_index[mem] = index
         index_mem[index] = mem 
-        Cost_Prior_array[index] = Cost_Prior[mem]
+        Cost_Prior_array[index] = 0 #Cost_Prior[mem]
         index += 1 
 
     index = 0 
@@ -219,7 +220,7 @@ def LoadData(dataset, f):
         index_job[index] = job
         index += 1
 
-    data = open("input.txt")
+    data = open("../../" + dataset + "/data/input.txt") 
     TestData = []
     for line in data:
         if line[0] != "c":
@@ -235,13 +236,13 @@ def LoadData(dataset, f):
         except:
             pass 
 
-    fout = open(str(f) + "/job.index", "w")
+    fout = open(dataset + "/job.index.txt", "w")
 
     for i in index_job:
         fout.write(str(i) + "\t" + str(index_job[i]) + "\n")
     fout.close() 
     
-    fout = open(str(f) + "/mem.index", "w")
+    fout = open(dataset + "/mem.index.txt", "w")
     for i in index_mem:
         fout.write(str(i) + "\t" + str(index_mem[i]) + "\n")
     fout.close() 
@@ -289,4 +290,4 @@ def LoadData(dataset, f):
     return Cost_array, Cost_Prior_array, Benefit_array, Member_array, TestData, TupleSet_array, Pos_array, Neg_array
 
 if __name__ == "__main__":
-    LoadData("ld", 32)
+    LoadData("linkedin")

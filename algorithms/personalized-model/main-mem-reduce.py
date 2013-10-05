@@ -6,7 +6,7 @@
 #
 # Creation Date : 27-06-2013
 #
-# Last Modified : Thu 26 Sep 2013 01:41:21 PM CDT
+# Last Modified : Sat 05 Oct 2013 04:20:32 PM CDT
 #
 # Created By : Huan Gui (hgui@linkedin.com) 
 #
@@ -64,12 +64,13 @@ graph = set()
 
 if __name__ == "__main__":
 
-    dataset = "cs" 
-    f = int(sys.argv[1]) 
-    inLoop = int(sys.argv[2])
-    outLoop = int(sys.argv[3]) 
-    
-    os.system("mkdir "+ str(f)) 
+    dataset = sys.argv[1]  
+    f = int(sys.argv[2]) 
+    inLoop = int(sys.argv[3])
+    outLoop = int(sys.argv[4]) 
+   
+    folder = dataset + "/" str(f)
+    os.system("mkdir "+ folder) 
 
     # Read Data 
     start = time()  
@@ -84,7 +85,6 @@ if __name__ == "__main__":
     print memCnt, jobCnt 
     
     print Tuple_len, Pos_len, Neg_len
-    exit(1) 
     
     gTupleCnt = Tuple_len + Pos_len + Neg_len 
     
